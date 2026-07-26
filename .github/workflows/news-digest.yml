@@ -1,0 +1,48 @@
+name: Daily news digests
+
+on:
+  schedule:
+    # 7am Australia/Sydney is 20:00 UTC (AEDT) or 21:00 UTC (AEST). We fire at
+    # both; the Python code sends only when local Sydney time is 07:00, so exactly
+    # one run per day actually posts — daylight saving handled without edits here.
+    - cron: "0 20 * * *"
+    - cron: "0 21 * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Send now, ignoring the 7am-Sydney gate"
+        type: boolean
+        default: true
+
+concurrency:
+  group: news-digest
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Run digests
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DISCORD_WEBHOOK_CYBER: ${{ secrets.DISCORD_WEBHOOK_CYBER }}
+          DISCORD_WEBHOOK_TECH: ${{ secrets.DISCORD_WEBHOOK_TECH }}
+          DISCORD_WEBHOOK_AI: ${{ secrets.DISCORD_WEBHOOK_AI }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.force }}" = "true" ]; then
+            python -m src.news.digest --force
+          else
+            python -m src.news.digest
+          fi

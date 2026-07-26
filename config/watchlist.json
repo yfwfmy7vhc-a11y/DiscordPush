@@ -1,0 +1,27 @@
+{
+  "_comment": "Pokemon card watchlist. Each entry is searched on eBay AU. An alert fires when a listing's total price (item + shipping) is at or below target_aud AND Claude Haiku judges the listing legit. Tune query/exclude to reduce noise.",
+  "currency": "AUD",
+  "cards": [
+    {
+      "name": "Charizard VMAX Rainbow (Champion's Path 074/073)",
+      "query": "charizard vmax rainbow champion's path 074/073",
+      "target_aud": 250,
+      "exclude": ["proxy", "custom", "metal", "orica", "fan made", "digital", "code card", "jumbo"],
+      "condition": "any"
+    },
+    {
+      "name": "Umbreon VMAX Alt Art (Evolving Skies 215/203)",
+      "query": "umbreon vmax alt art 215/203 evolving skies",
+      "target_aud": 500,
+      "exclude": ["proxy", "custom", "orica", "fan made", "digital", "code card", "jumbo", "sticker"],
+      "condition": "any"
+    },
+    {
+      "name": "Pikachu Illustrator (reference only – set a sane target)",
+      "query": "pikachu illustrator promo",
+      "target_aud": 100,
+      "exclude": ["proxy", "custom", "orica", "fan made", "replica", "digital", "code card", "sticker", "poster"],
+      "condition": "any"
+    }
+  ]
+}

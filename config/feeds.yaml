@@ -1,0 +1,34 @@
+# RSS feed sources for the news system.
+#
+# `digests` feeds power the daily 7am morning briefs (one Discord channel per category).
+# `urgent` feeds are scanned hourly for major AU cyber incidents.
+#
+# Feed URLs occasionally move. The code skips any feed that fails to fetch/parse,
+# so a broken URL degrades gracefully rather than crashing the run. Verify/adjust
+# these to taste.
+
+digests:
+  cyber:
+    - https://www.bleepingcomputer.com/feed/
+    - https://feeds.feedburner.com/TheHackersNews
+    - https://krebsonsecurity.com/feed/
+    - https://www.darkreading.com/rss.xml
+    - https://www.cyber.gov.au/rss/news
+  tech:
+    - https://feeds.arstechnica.com/arstechnica/index
+    - https://www.theverge.com/rss/index.xml
+    - https://techcrunch.com/feed/
+    - https://www.itnews.com.au/RSS/rss.ashx
+  ai:
+    - https://www.technologyreview.com/topic/artificial-intelligence/feed
+    - https://venturebeat.com/category/ai/feed/
+    - https://www.artificialintelligence-news.com/feed/
+
+# Feeds scanned hourly for urgent Australian cyber incidents. Keep this list
+# AU-focused; the model + keyword pre-filter decide what's genuinely urgent.
+urgent:
+  - https://www.cyber.gov.au/rss/alerts
+  - https://www.cyber.gov.au/rss/news
+  - https://www.itnews.com.au/RSS/rss.ashx
+  - https://www.cyberdaily.au/rss
+  - https://www.bleepingcomputer.com/feed/
