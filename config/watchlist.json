@@ -3,24 +3,80 @@
   "currency": "AUD",
   "cards": [
     {
-      "name": "Charizard VMAX Rainbow (Champion's Path 074/073)",
-      "query": "charizard vmax rainbow champion's path 074/073",
-      "target_aud": 250,
-      "exclude": ["proxy", "custom", "metal", "orica", "fan made", "digital", "code card", "jumbo"],
-      "condition": "any"
-    },
-    {
-      "name": "Umbreon VMAX Alt Art (Evolving Skies 215/203)",
-      "query": "umbreon vmax alt art 215/203 evolving skies",
+      "name": "Shining Gyarados #130 (Pokemon Japanese Awakening Legends)",
+      "query": "shining gyarados 130 japanese awakening legends",
       "target_aud": 500,
-      "exclude": ["proxy", "custom", "orica", "fan made", "digital", "code card", "jumbo", "sticker"],
+      "exclude": ["proxy", "custom", "orica", "fan made", "digital", "code card", "reprint", "graded", "PSA", "CGC", "BGS"],
       "condition": "any"
     },
     {
-      "name": "Pikachu Illustrator (reference only – set a sane target)",
-      "query": "pikachu illustrator promo",
-      "target_aud": 100,
-      "exclude": ["proxy", "custom", "orica", "fan made", "replica", "digital", "code card", "sticker", "poster"],
+      "name": "Shining Magikarp #129 (Pokemon Japanese Awakening Legends)",
+      "query": "shining magikarp 129 japanese awakening legends",
+      "target_aud": 450,
+      "exclude": ["proxy", "custom", "orica", "fan made", "digital", "code card", "reprint", "graded", "PSA", "CGC", "BGS"],
+      "condition": "any"
+    },
+    {
+      "name": "Lugia #249 (Pokemon Japanese Gold, Silver, New World)",
+      "query": "lugia 249 japanese neo genesis gold silver new world",
+      "target_aud": 190,
+      "exclude": ["proxy", "custom", "orica", "fan made", "digital", "code card", "reprint", "graded", "PSA", "CGC", "BGS"],
+      "condition": "any"
+    },
+    {
+      "name": "Blaine's Charizard #2 (Pokemon Gym Challenge)",
+      "query": "blaine's charizard 2 gym challenge",
+      "target_aud": 400,
+      "exclude": ["proxy", "custom", "orica", "fan made", "digital", "code card", "reprint", "1st edition", "graded", "PSA", "CGC", "BGS"],
+      "condition": "any"
+    },
+    {
+      "name": "Shining Magikarp #66 first edition (Pokemon Neo Revelation)",
+      "query": "shining magikarp 66 first edition neo revelation",
+      "target_aud": 450,
+      "exclude": ["proxy", "custom", "orica", "fan made", "digital", "code card", "reprint", "1st edition", "double holo error", "graded", "PSA", "CGC", "BGS"],
+      "condition": "any"
+    },
+    {
+      "name": "Birthday Pikachu #24 (Pokemon Promo)",
+      "query": "birthday pikachu 24 black star promo",
+      "target_aud": 150,
+      "exclude": ["proxy", "custom", "orica", "fan made", "digital", "code card", "reprint", "world collection", "graded", "PSA", "CGC", "BGS"],
+      "condition": "any"
+    },
+    {
+      "name": "Bilingual Exeggutor #103 (Pokemon Japanese Promo)",
+      "query": "bilingual exeggutor 103 trainer magazine promo",
+      "target_aud": 70,
+      "exclude": ["proxy", "custom", "orica", "fan made", "digital", "code card", "reprint", "graded", "PSA", "CGC", "BGS"],
+      "condition": "any"
+    },
+    {
+      "name": "Ooyama's Pikachu [Series III] #25 (Pokemon Japanese Vending)",
+      "query": "ooyama's pikachu series 3 25 japanese vending",
+      "target_aud": 500,
+      "exclude": ["proxy", "custom", "orica", "fan made", "digital", "code card", "reprint", "graded", "PSA", "CGC", "BGS"],
+      "condition": "any"
+    },
+    {
+      "name": "Dark Gengar #94 (Pokemon Japanese Darkness, and to Light)",
+      "query": "dark gengar 94 japanese neo 4 darkness and to light",
+      "target_aud": 90,
+      "exclude": ["proxy", "custom", "orica", "fan made", "digital", "code card", "reprint", "graded", "PSA", "CGC", "BGS"],
+      "condition": "any"
+    },
+    {
+      "name": "Shining Charizard #6 (Pokemon Japanese Darkness, and to Light)",
+      "query": "shining charizard 6 japanese neo 4 darkness and to light",
+      "target_aud": 600,
+      "exclude": ["proxy", "custom", "orica", "fan made", "digital", "code card", "reprint", "neo destiny 107", "graded", "PSA", "CGC", "BGS"],
+      "condition": "any"
+    },
+    {
+      "name": "Lance's Charizard #97 (Pokemon Japanese VS)",
+      "query": "lance's charizard 97 japanese vs",
+      "target_aud": 250,
+      "exclude": ["proxy", "custom", "orica", "fan made", "digital", "code card", "reprint", "graded", "PSA", "CGC", "BGS"],
       "condition": "any"
     }
   ]
