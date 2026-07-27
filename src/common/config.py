@@ -26,6 +26,9 @@ POKEMON_STATE_PATH = STATE_DIR / "pokemon_seen.json"
 NEWS_STATE_PATH = STATE_DIR / "news_seen.json"
 # Our own accumulating daily-low price history (grows into a real time series).
 PRICE_HISTORY_PATH = STATE_DIR / "price_history.json"
+# Remembers the last date the daily digest was sent, so a late GitHub cron
+# can still deliver it once (and only once) per day.
+DIGEST_STATE_PATH = STATE_DIR / "digest_state.json"
 
 # ---------------------------------------------------------------------------
 # Models / timezone

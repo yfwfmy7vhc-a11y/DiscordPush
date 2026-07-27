@@ -4,12 +4,15 @@ Gathers the last ~24h of headlines for each category (cyber, tech, ai),
 summarises them with Claude Haiku, and posts one embed to each category's
 Discord channel.
 
-The GitHub Actions cron runs this at a couple of UTC times bracketing 7am
-Sydney; we gate on local time here so exactly one run per day actually sends
-(handles daylight saving without touching the workflow).
+The GitHub Actions cron runs this several times each morning (UTC). Instead of
+requiring the clock to read *exactly* 7am — which a late GitHub run would miss —
+we send once when the Sydney time is anywhere in the morning window AND we haven't
+already sent today. A tiny state file (digest_state.json) records the last send
+date, so whichever morning run fires first delivers it and the rest are no-ops.
+This survives daylight saving and GitHub's habit of running crons late.
 
-Run:  python -m src.news.digest          (respects the 7am-Sydney gate)
-      python -m src.news.digest --force   (send now, ignore the time gate)
+Run:  python -m src.news.digest          (respects the morning-window + once-a-day gate)
+      python -m src.news.digest --force   (send now, ignore the gate; doesn't consume the day)
 """
 
 from __future__ import annotations
@@ -19,17 +22,20 @@ from datetime import datetime
 from typing import Any
 from zoneinfo import ZoneInfo
 
-from ..common import claude_client, config, discord
+from ..common import claude_client, config, discord, state
 from . import feeds
 
 _WINDOW_SECONDS = 26 * 3600  # a little over 24h for slack
 _MAX_ITEMS_PER_CATEGORY = 45  # cap what we hand the model
 _MIN_ITEMS = 10  # if fewer than this land in the window, fall back to newest-N
+# Auto-send only when Sydney time is in [DIGEST_HOUR_LOCAL, _MORNING_END_HOUR),
+# i.e. 07:00–11:59 — wide enough to absorb a late cron, narrow enough that a
+# stray run at night never fires.
+_MORNING_END_HOUR = 12
 
 
-def _should_run_now() -> bool:
-    now_local = datetime.now(ZoneInfo(config.LOCAL_TZ))
-    return now_local.hour == config.DIGEST_HOUR_LOCAL
+def _today_local() -> str:
+    return datetime.now(ZoneInfo(config.LOCAL_TZ)).date().isoformat()
 
 
 def _digest_embed(category: str, brief: str, count: int) -> dict[str, Any]:
@@ -48,10 +54,18 @@ def _digest_embed(category: str, brief: str, count: int) -> dict[str, Any]:
 
 
 def run(force: bool = False) -> int:
-    if not force and not _should_run_now():
-        now_local = datetime.now(ZoneInfo(config.LOCAL_TZ))
-        print(f"[skip] local time {now_local:%H:%M %Z} != {config.DIGEST_HOUR_LOCAL}:00; not sending.")
-        return 0
+    now_local = datetime.now(ZoneInfo(config.LOCAL_TZ))
+    today = _today_local()
+    dstate = state.load(config.DIGEST_STATE_PATH)
+
+    if not force:
+        if not (config.DIGEST_HOUR_LOCAL <= now_local.hour < _MORNING_END_HOUR):
+            print(f"[skip] {now_local:%H:%M %Z} outside the "
+                  f"{config.DIGEST_HOUR_LOCAL:02d}:00–{_MORNING_END_HOUR:02d}:00 window.")
+            return 0
+        if dstate.get("last_sent") == today:
+            print(f"[skip] digest already sent today ({today}).")
+            return 0
 
     feeds_cfg = config.load_feeds().get("digests", {})
     for category, urls in feeds_cfg.items():
@@ -72,6 +86,14 @@ def run(force: bool = False) -> int:
         embed = _digest_embed(category, brief, len(items))
         discord.send_embeds(config.webhook(category), [embed])
         print(f"  posted {category} digest")
+
+    # Record the send so later morning crons today become no-ops. A manual
+    # --force run deliberately doesn't consume the day, so it won't block the
+    # real scheduled digest.
+    if not force:
+        dstate["last_sent"] = today
+        state.save(config.DIGEST_STATE_PATH, dstate)
+        print(f"marked digest sent for {today}")
 
     return 0
 
