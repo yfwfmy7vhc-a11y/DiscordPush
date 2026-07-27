@@ -1,1 +1,20 @@
-{}
+{
+  "Charizard VMAX Rainbow (Champion's Path 074/073)": {
+    "daily_low": {
+      "2026-07-27": 33.67
+    },
+    "first_tracked": "2026-07-27"
+  },
+  "Pikachu Illustrator (reference only – set a sane target)": {
+    "daily_low": {
+      "2026-07-27": 10.0
+    },
+    "first_tracked": "2026-07-27"
+  },
+  "Umbreon VMAX Alt Art (Evolving Skies 215/203)": {
+    "daily_low": {
+      "2026-07-27": 14.99
+    },
+    "first_tracked": "2026-07-27"
+  }
+}
