@@ -11,10 +11,15 @@ import time
 from typing import Any
 
 import feedparser
+import requests
 
 _HTML_TAG = re.compile(r"<[^>]+>")
 # feedparser sets a UA, but some feeds 403 the default; use a browser-ish one.
 _UA = "Mozilla/5.0 (compatible; DiscordPushBot/1.0; +https://github.com/)"
+# Hard per-feed timeout. feedparser.parse(url) has NO timeout by default, so a
+# single hung server could stall the whole run for many minutes — we fetch with
+# requests (which does time out) and hand the bytes to feedparser instead.
+_FEED_TIMEOUT = 20
 
 
 def _entry_epoch(entry: Any) -> float | None:
@@ -33,9 +38,15 @@ def _clean(text: str) -> str:
 
 
 def fetch_feed(url: str) -> list[dict[str, Any]]:
-    """Fetch a single feed, returning normalized entries. Never raises."""
+    """Fetch a single feed, returning normalized entries. Never raises.
+
+    Fetches with a hard timeout so one unresponsive feed can't hang the run,
+    then parses the returned bytes with feedparser.
+    """
     try:
-        parsed = feedparser.parse(url, agent=_UA)
+        resp = requests.get(url, headers={"User-Agent": _UA}, timeout=_FEED_TIMEOUT)
+        resp.raise_for_status()
+        parsed = feedparser.parse(resp.content)
     except Exception as exc:
         print(f"  [feed] error fetching {url}: {exc}")
         return []
