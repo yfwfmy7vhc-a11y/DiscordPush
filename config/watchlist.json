@@ -25,7 +25,7 @@
     },
     {
       "name": "Blaine's Charizard #2 (Pokemon Gym Challenge)",
-      "query": "blaine's charizard 2 gym challenge",
+      "query": "blaine's charizard 6 Challenge From The Darkness",
       "target_aud": 400,
       "exclude": ["proxy", "custom", "orica", "fan made", "digital", "code card", "reprint", "1st edition", "graded", "PSA", "CGC", "BGS"],
       "condition": "any"
@@ -41,7 +41,7 @@
       "name": "Birthday Pikachu #24 (Pokemon Promo)",
       "query": "birthday pikachu 24 black star promo",
       "target_aud": 150,
-      "exclude": ["proxy", "custom", "orica", "fan made", "digital", "code card", "reprint", "world collection", "graded", "PSA", "CGC", "BGS"],
+      "exclude": ["proxy", "custom", "orica", "fan made", "digital", "code card", "reprint", "world collection", "graded", "PSA", "25th", "25 anniversary", CGC", "BGS"],
       "condition": "any"
     },
     {
