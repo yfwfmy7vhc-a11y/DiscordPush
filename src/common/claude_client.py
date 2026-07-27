@@ -12,12 +12,29 @@ outputs (json_schema) so we always get parseable JSON.
 from __future__ import annotations
 
 import json
+import re
 from functools import lru_cache
 from typing import Any
 
 import anthropic
 
 from . import config
+
+# Matches a Markdown link: [label](https://url)
+_MD_LINK = re.compile(r"\[([^\]]+)\]\((https?://[^)\s]+)\)")
+
+
+def _strip_unknown_links(text: str, allowed_urls: set[str]) -> str:
+    """Downgrade any Markdown link whose URL wasn't in our source list to plain text.
+
+    Guards against the model inventing or mis-remembering a URL — only links that
+    point at an article we actually fed it survive as clickable.
+    """
+    def repl(m: re.Match) -> str:
+        label, url = m.group(1), m.group(2)
+        return m.group(0) if url in allowed_urls else label
+
+    return _MD_LINK.sub(repl, text)
 
 
 @lru_cache(maxsize=1)
@@ -109,35 +126,45 @@ def summarize_digest(category: str, items: list[dict[str, Any]]) -> str:
     """Summarise a list of {title, source, link, summary} into a Discord-ready brief."""
     focus = _CATEGORY_BRIEF.get(category, category)
     lines = []
+    allowed_urls: set[str] = set()
     for i, it in enumerate(items, 1):
+        link = (it.get("link") or "").strip()
+        if link:
+            allowed_urls.add(link)
         lines.append(
             f"{i}. [{it.get('source', '?')}] {it.get('title', '').strip()}\n"
+            f"   URL: {link}\n"
             f"   {(it.get('summary') or '').strip()[:400]}"
         )
     corpus = "\n".join(lines)
 
     prompt = (
         f"You are writing the morning briefing on {focus} for a sharp, busy IT/security "
-        "professional in Australia. Below are recent headlines pulled from RSS.\n\n"
+        "professional in Australia. Below are recent headlines pulled from RSS, each with "
+        "its source URL.\n\n"
         "Write an engaging, skimmable brief for Discord using Markdown:\n"
         "- Open with one punchy sentence capturing the day's theme (no 'Vibe:' label).\n"
         "- Then 6-10 bullets, most important first. Each bullet: bold a 3-6 word hook, then "
         "1-2 sentences on what happened AND why it actually matters to the reader — be "
         "specific (names, numbers, versions) rather than vague. Lead with anything "
         "Australia-relevant.\n"
+        "- End each bullet with a Markdown link to its single most relevant source, "
+        "formatted exactly like ([BleepingComputer](https://example.com/article)). Use ONLY "
+        "URLs copied verbatim from the list below — never invent, guess, or shorten a URL. "
+        "If a bullet merges multiple stories, link the most important one.\n"
         "- Group or merge duplicate stories; cover a range of distinct topics rather than "
         "three angles on one story. Skip fluff, listicles, sponsored posts, and pure marketing.\n"
         "- Have a point of view: call out what's genuinely notable vs routine. Don't pad.\n"
-        "- Only use facts present in the headlines; do not invent details or links. "
-        "Aim for 1200-2500 characters.\n\n"
+        "- Only use facts present in the headlines. Aim for 1500-2800 characters.\n\n"
         f"Headlines:\n{corpus}"
     )
     resp = _client().messages.create(
         model=config.HAIKU_MODEL,
-        max_tokens=2000,
+        max_tokens=2200,
         messages=[{"role": "user", "content": prompt}],
     )
-    return next((b.text for b in resp.content if b.type == "text"), "").strip()
+    brief = next((b.text for b in resp.content if b.type == "text"), "").strip()
+    return _strip_unknown_links(brief, allowed_urls)
 
 
 # ---------------------------------------------------------------------------
