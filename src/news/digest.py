@@ -23,7 +23,8 @@ from ..common import claude_client, config, discord
 from . import feeds
 
 _WINDOW_SECONDS = 26 * 3600  # a little over 24h for slack
-_MAX_ITEMS_PER_CATEGORY = 40  # cap what we hand the model
+_MAX_ITEMS_PER_CATEGORY = 45  # cap what we hand the model
+_MIN_ITEMS = 10  # if fewer than this land in the window, fall back to newest-N
 
 
 def _should_run_now() -> bool:
@@ -55,7 +56,9 @@ def run(force: bool = False) -> int:
     feeds_cfg = config.load_feeds().get("digests", {})
     for category, urls in feeds_cfg.items():
         print(f"\n== digest: {category} ({len(urls)} feeds)")
-        items = feeds.fetch_recent(urls, _WINDOW_SECONDS)[:_MAX_ITEMS_PER_CATEGORY]
+        items = feeds.fetch_recent(
+            urls, _WINDOW_SECONDS, min_items=_MIN_ITEMS, max_items=_MAX_ITEMS_PER_CATEGORY
+        )
         print(f"  {len(items)} recent items")
         if not items:
             brief = ""

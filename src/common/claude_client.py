@@ -117,20 +117,24 @@ def summarize_digest(category: str, items: list[dict[str, Any]]) -> str:
     corpus = "\n".join(lines)
 
     prompt = (
-        f"You are writing a concise morning briefing on {focus} for a busy IT/security "
-        "professional in Australia. Below are the last ~24h of headlines pulled from RSS.\n\n"
-        "Write a tight brief for Discord using Markdown:\n"
-        "- Start with a one-line 'vibe of the day' summary.\n"
-        "- Then 4-8 bullet points ranked by importance. Each bullet: bold a 3-6 word hook, "
-        "then one crisp sentence on what happened and why it matters. Prefer Australian-"
-        "relevant items where present.\n"
-        "- Merge duplicate stories. Skip fluff, listicles, and pure marketing.\n"
-        "- Do NOT invent facts or links; only use what's provided. Keep it under ~1800 characters.\n\n"
+        f"You are writing the morning briefing on {focus} for a sharp, busy IT/security "
+        "professional in Australia. Below are recent headlines pulled from RSS.\n\n"
+        "Write an engaging, skimmable brief for Discord using Markdown:\n"
+        "- Open with one punchy sentence capturing the day's theme (no 'Vibe:' label).\n"
+        "- Then 6-10 bullets, most important first. Each bullet: bold a 3-6 word hook, then "
+        "1-2 sentences on what happened AND why it actually matters to the reader — be "
+        "specific (names, numbers, versions) rather than vague. Lead with anything "
+        "Australia-relevant.\n"
+        "- Group or merge duplicate stories; cover a range of distinct topics rather than "
+        "three angles on one story. Skip fluff, listicles, sponsored posts, and pure marketing.\n"
+        "- Have a point of view: call out what's genuinely notable vs routine. Don't pad.\n"
+        "- Only use facts present in the headlines; do not invent details or links. "
+        "Aim for 1200-2500 characters.\n\n"
         f"Headlines:\n{corpus}"
     )
     resp = _client().messages.create(
         model=config.HAIKU_MODEL,
-        max_tokens=1400,
+        max_tokens=2000,
         messages=[{"role": "user", "content": prompt}],
     )
     return next((b.text for b in resp.content if b.type == "text"), "").strip()
