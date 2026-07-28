@@ -2,8 +2,11 @@ name: Pokémon price monitor
 
 on:
   schedule:
-    # Every 30 minutes (UTC). GitHub cron timing is best-effort, not exact.
-    - cron: "*/30 * * * *"
+    # Every 30 minutes, offset off the top of the hour. GitHub's free scheduler is
+    # best-effort and drops runs under load — :00 and :30 are the most congested
+    # minutes, so we use :07 and :37 to improve the odds of actually being run.
+    # Expect a run every 30-90 min in practice, not reliably every 30.
+    - cron: "7,37 * * * *"
   workflow_dispatch: {}
 
 # Prevent overlapping runs from racing on the state commit.

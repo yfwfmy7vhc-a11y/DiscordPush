@@ -2,7 +2,10 @@ name: Urgent AU cyber alerts
 
 on:
   schedule:
-    - cron: "0 * * * *" # hourly (UTC)
+    # Hourly, offset off the top of the hour — GitHub drops :00 crons most often
+    # under load. The scanner's 90-minute lookback window overlaps runs, so a
+    # skipped hour doesn't lose any articles.
+    - cron: "23 * * * *"
   workflow_dispatch: {}
 
 concurrency:

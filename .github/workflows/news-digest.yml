@@ -2,13 +2,17 @@ name: Daily news digests
 
 on:
   schedule:
-    # 7am Australia/Sydney is 20:00 UTC (AEDT) or 21:00 UTC (AEST). GitHub runs
-    # scheduled crons late and skips top-of-hour (:00) ones under load, so we fire
-    # several times each morning at an off-peak minute (:17). The Python code sends
-    # once when Sydney time is in the 07:00–11:59 window and records the date, so
-    # exactly one digest goes out per day no matter which run lands first — and a
-    # late/skipped run can't cause a miss.
-    - cron: "17 20-23 * * *"
+    # 7am Australia/Sydney is 20:00 UTC (AEDT) or 21:00 UTC (AEST).
+    #
+    # GitHub's free scheduler is unreliable: it runs crons late and silently DROPS
+    # them under load. So rather than trusting any single trigger, we fire every 30
+    # minutes across the whole 19:00-02:59 UTC span (≈05:00-13:00 Sydney year-round).
+    # The Python code sends only when Sydney time is inside the 07:00-11:59 window
+    # AND nothing has been sent yet today, then records the date — so exactly one
+    # digest goes out per day no matter which trigger survives. Extra runs are
+    # ~15-second no-ops.
+    - cron: "*/30 19-23 * * *"
+    - cron: "*/30 0-2 * * *"
   workflow_dispatch:
     inputs:
       force:
