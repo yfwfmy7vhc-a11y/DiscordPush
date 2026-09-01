@@ -19,10 +19,6 @@
     "title": "US officials backpedal on claims that gov agencies were hacked",
     "ts": 1788124626.9656491
   },
-  "76cbe54aabd1e7c1": {
-    "title": "NDIA fended off March TeamPCP supply-chain hackers",
-    "ts": 1787087053.3902822
-  },
   "aab5852a61fef370": {
     "title": "ASD warns Australian TeamCity servers under attack",
     "ts": 1787628579.5532737
@@ -38,9 +34,5 @@
   "eea4e5378cf7f5a1": {
     "title": "How a Texas student blew the whistle on a rogue AI hacking attempt",
     "ts": 1787262574.26835
-  },
-  "ff4f09a72f7feda8": {
-    "title": "OpenAI slows model training to bolster security",
-    "ts": 1787087051.8890154
   }
 }
