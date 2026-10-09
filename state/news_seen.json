@@ -1,4 +1,8 @@
 {
+  "0c103a036f9d585d": {
+    "title": "Citrix warns admins to patch new NetScaler RCE flaw immediately",
+    "ts": 1791537881.8618758
+  },
   "2f10ba9bb474a17c": {
     "title": "Microsoft spots new twist on ClickFix \"cache smuggling\"",
     "ts": 1791225513.3870459
@@ -14,10 +18,6 @@
   "624e1a7a08049095": {
     "title": "Police dismantle KillSec ransomware gang allegedly led by 16-year-old",
     "ts": 1790865606.1177514
-  },
-  "8081b9779a726d67": {
-    "title": "Abandoned QR code subdomains open to hijacking, researcher says",
-    "ts": 1790323260.6988194
   },
   "81119a01af74d9b8": {
     "title": "Atlassian Data Centre products hit by unauthenticated file access vulnerability",
