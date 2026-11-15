@@ -1,8 +1,4 @@
 {
-  "03d6c4113cd2b088": {
-    "title": "ARTEX AI hacking framework spreads to another China-linked group",
-    "ts": 1793567890.6970954
-  },
   "063a1cfbd5d06f7b": {
     "title": "Microsoft users caught up in global M365 outage",
     "ts": 1794517142.4448192
@@ -10,5 +6,9 @@
   "38397ac30d5ea314": {
     "title": "\"Don't ask again\" in Anthropic's Claude Code leaks developer secrets",
     "ts": 1794167410.9404762
+  },
+  "91176a664e75faf4": {
+    "title": "Coles Group investigating a cyber incident",
+    "ts": 1794783720.0143456
   }
 }
