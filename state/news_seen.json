@@ -3,6 +3,10 @@
     "title": "Microsoft users caught up in global M365 outage",
     "ts": 1794517142.4448192
   },
+  "1d842aa5e55e01a1": {
+    "title": "Australia's Bell Financial says some client data likely accessed",
+    "ts": 1795145873.3404949
+  },
   "38397ac30d5ea314": {
     "title": "\"Don't ask again\" in Anthropic's Claude Code leaks developer secrets",
     "ts": 1794167410.9404762
@@ -18,6 +22,10 @@
   "ad081754bcfc231f": {
     "title": "US was warned of telecom security risks years before Salt Typhoon",
     "ts": 1795126818.1050406
+  },
+  "ed4bf2cdef2356d5": {
+    "title": "JPMorgan, Visa, Mastercard say third-party vendors targeted in cyberattack",
+    "ts": 1795145873.4392521
   },
   "fa2a9b83cad4b99f": {
     "title": "Kernel-crashing NoisyTCP bug sat in Linux for 11 years",
